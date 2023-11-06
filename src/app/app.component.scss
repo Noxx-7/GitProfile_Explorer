@@ -1,0 +1,16 @@
+:root {
+  --color1: #f0f0f0;
+  --color2: #e0e0e0;
+}
+
+.skeleton-loader {
+  background: linear-gradient(90deg, var(--color1) 25%, var(--color2) 50%, var(--color1) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0%, 100% {
+    background-position: 200% 0;
+  }
+}

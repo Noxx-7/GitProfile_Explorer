@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fyle Frontend Development Challenge</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold">Fyle Frontend Development Challenge</h1>
+
+        <div class="input-container mt-4">
+            <input type="text" [(ngModel)]="githubUsername" placeholder="Enter GitHub username" name="githubUsername" class="p-2 rounded border border-gray-300">
+            <button (click)="searchUser()" class="ml-2 px-4 py-2 rounded bg-blue-500 text-white">Search</button>
+        </div>
+
+        <ng-template #loading>
+            <div class="skeleton-loader mt-4">
+                <!-- Implement your skeleton loader content here -->
+            </div>
+        </ng-template>
+
+        <div *ngIf="user; else loading" class="user-info mt-4 flex">
+            <div class="w-48 h-48 rounded-full overflow-hidden mr-11">
+                <img [src]="user.avatar_url" alt="User Avatar">
+            </div>
+            <div class="user-details">
+                <h2 class="text-xl font-semibold mb-2">{{ user.name }}</h2>
+                <p *ngIf="user.bio" class="mb-2">{{ user.bio }}</p>
+                <p *ngIf="user.location" class="mb-2">{{ user.location }}</p>
+                <a [href]="user.html_url" target="_blank" class="text-blue-500 hover:underline">GitHub</a>
+                <a *ngIf="user.twitter_username" [href]="'https://twitter.com/' + user.twitter_username" target="_blank" class="text-blue-500 hover:underline ml-4">Twitter</a>
+            </div>
+        </div>
+
+        <div *ngIf="repositories.length > 0; else loading" class="repository-list mt-4">
+          <div class="flex flex-wrap -mx-4">
+              <div *ngFor="let repo of repositories" class="w-1/2 px-4 mb-4">
+                  <div class="card p-4 border border-gray-200 rounded">
+                      <h3 class="text-xl font-semibold">{{ repo.name }}</h3>
+                      <p class="text-gray-600 mb-2">{{ repo.description || 'No description available' }}</p>
+                      <div class="tags">
+                          <span class="bg-blue-500 text-white font-bold px-2 py-1 rounded">{{ getTechStack(repo) }}</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+            <div class="pagination mt-4 flex justify-center">
+                <!-- Previous and Next buttons -->
+                <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1" class="mr-2 px-4 py-2 rounded bg-blue-500 text-white"><--Previous</button>
+                <span class="mt-2">Page {{ currentPage }}</span>
+                <button (click)="changePage(currentPage + 1)" [disabled]="repositories.length < itemsPerPage" class="ml-2 px-4 py-2 rounded bg-blue-500 text-white">Next--></button>
+
+                <!-- Items per page selection -->
+                <select class="ml-4 px-4 py-2 rounded border border-gray-300" [(ngModel)]="itemsPerPage" (change)="loadRepositories()">
+                    <option value="10">10 per page</option>
+                    <option value="20">20 per page</option>
+                    <option value="50">50 per page</option>
+                    <option value="100">100 per page</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

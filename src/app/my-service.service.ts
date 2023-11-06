@@ -1,0 +1,12 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MyService {
+  constructor() { }
+
+  getData(data: string = 'Some data') {
+    return data;
+  }
+}
